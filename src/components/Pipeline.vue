@@ -1,14 +1,14 @@
 <template>
 
     <div>
-        <div class="out-pipeline">
+        <div class="pipeline-wrapper">
             <div class="pipeline">
                 <span>开始</span>
             </div>
             <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
         </div>
 
-        <div class="out-pipeline" v-for="pipe in dynamicPipes">
+        <div class="pipeline-wrapper" v-for="pipe in dynamicPipes">
             <div class="pipeline-node" :class="{'disable-node':!pipe.checked}" @click="clickNode">
                 <input type="checkbox" class="checkbox" v-model="pipe.checked"></input>
                 <span>{{pipe.name}}</span>
@@ -72,7 +72,6 @@
     .pipeline, .pipeline-node
         position: relative
         display: inline-block
-        background: #20a0ff;
         width: 100px
         height: 50px
         border-radius: 5px
@@ -92,16 +91,24 @@
             display inline-block
             line-height 50px //与div一致
             font-size 14px
-            color: white
-
-    .disable-node
-        background gray
 
     .pipeline-node
         cursor pointer
+        background: #20a0ff;
+        span
+            color: white
 
-    .out-pipeline
+    .pipeline
+        background white
+        border solid 1px #20a0ff
+        span
+            color #20a0ff
+
+    .pipeline-wrapper
         display inline-block
+
+    .disable-node
+        background gray
 
 
 </style>
