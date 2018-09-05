@@ -10,7 +10,13 @@
 
         <div class="pipeline-wrapper" v-for="pipe in dynamicPipes">
             <div class="pipeline-node" :class="{'disable-node':!pipe.checked}" @click="clickNode">
-                <input type="checkbox" class="checkbox" v-model="pipe.checked"></input>
+                <div class="node-checkbox">
+                    <label>
+                        <input type="checkbox" v-model="pipe.checked"/>
+                        <span></span>
+                        <div class="show-box"></div>
+                    </label>
+                </div>
                 <span>{{pipe.name}}</span>
             </div>
             <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
@@ -76,16 +82,6 @@
         height: 50px
         border-radius: 5px
         transition .3s
-        &:hover
-            input
-                display inline-block
-        .checkbox
-            position: absolute
-            top: 0px
-            right: 0px
-            border-radius: 5px;
-            display none
-            background-color white
         span
             vertical-align: middle
             display inline-block
@@ -97,6 +93,11 @@
         background: #20a0ff;
         span
             color: white
+        &:hover
+            div
+                label
+                    .show-box
+                        display inline
 
     .pipeline
         background white
@@ -110,5 +111,45 @@
     .disable-node
         background gray
 
+    .node-checkbox
+        position: absolute
+        top: 0px
+        right: 0px
+        width: 14px;
+        height: 14px;
+
+
+        /*border-radius: 5px;*/
+
+
+        label
+            position: relative
+            cursor: pointer
+        input:checked + span + .show-box
+            background: #ec6337
+        input
+            display none
+        .show-box
+            position: absolute
+            top: -2px
+            left: -7px
+            width: 14px
+            height: 14px
+            border-radius: 5px
+            /*border: 1px solid #d8d8d8*/
+            background: white
+            display none
+
+
+            &:before
+                content: ''
+                position: absolute
+                top: 1px
+                left: 4px
+                width: 6px
+                height: 10px
+                border: solid white
+                border-width: 0 2px 2px 0
+                transform: rotate(45deg)
 
 </style>
