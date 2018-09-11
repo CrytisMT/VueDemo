@@ -1,29 +1,34 @@
 <template>
 
     <div>
-        <div class="pipeline-wrapper">
-            <div class="pipeline">
-                <span>开始</span>
-            </div>
-            <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
-        </div>
-
-        <div class="pipeline-wrapper" v-for="pipe in dynamicPipes">
-            <div class="pipeline-node" :class="{'disable-node':!pipe.checked}" @click="clickNode">
-                <div class="node-checkbox">
-                    <label>
-                        <input type="checkbox" v-model="pipe.checked"/>
-                        <span></span>
-                        <div class="show-box"></div>
-                    </label>
+        <div>
+            <div class="pipeline-wrapper">
+                <div class="pipeline">
+                    <span>开始</span>
                 </div>
-                <span>{{pipe.name}}</span>
+                <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
             </div>
-            <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
-        </div>
 
-        <div class="pipeline">
-            <span>完成</span>
+            <div class="pipeline-wrapper" v-for="(pipe,index) in dynamicPipes" :index="index">
+                <div class="pipeline-node" :class="{'disable-node':!pipe.checked}" @click="clickNode(index)">
+                    <div class="node-checkbox">
+                        <label>
+                            <input type="checkbox" v-model="pipe.checked"/>
+                            <span></span>
+                            <div class="show-box"></div>
+                        </label>
+                    </div>
+                    <span>{{pipe.name}}</span>
+                </div>
+                <Icon :size=20 :color="'#20a0ff'" type="md-arrow-forward"/>
+            </div>
+
+            <div class="pipeline">
+                <span>完成</span>
+            </div>
+        </div>
+        <div ref="contents">
+            <slot></slot>
         </div>
     </div>
 </template>
@@ -31,24 +36,24 @@
 <script>
     export default {
         name: "Pipeline",
+        props: ['pipes'],//todo 只勾选后面的 有bug
         data() {
             return {
-                pipes: [
-                    {
-                        name: 'aaa',
-                        checked: true,
-                        dependsOn: []
-                    },
-                    {
-                        name: 'bbb',
-                        checked: true,
-                        dependsOn: ['aaa']
-                    }]
+                activeKey: undefined
             }
         },
         methods: {
-            clickNode(e) {
-                console.log(e)
+            clickNode(index) {
+                console.log(index);
+                console.log(...this.$refs.contents.children);
+
+                [...this.$refs.contents.children].forEach((child, i) => {
+                    if (index === i) {
+                        child.style.display = 'inline-block'
+                    } else {
+                        child.style.display = 'none'
+                    }
+                })
             }
         },
         computed: {
@@ -118,9 +123,7 @@
         width: 14px;
         height: 14px;
 
-
         /*border-radius: 5px;*/
-
 
         label
             position: relative
@@ -139,7 +142,6 @@
             /*border: 1px solid #d8d8d8*/
             background: white
             display none
-
 
             &:before
                 content: ''
